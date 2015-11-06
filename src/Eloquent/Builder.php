@@ -1,10 +1,18 @@
 <?php namespace Phaza\LaravelPostgis\Eloquent;
 
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Phaza\LaravelPostgis\Geometries\GeometryInterface;
 
 class Builder extends EloquentBuilder
 {
+    public function __construct(QueryBuilder $query)
+    {
+        parent::__construct($query);
+
+        //$this->query->macros['spatiallyContainsOne']
+    }
+
     public function update(array $values)
     {
         foreach ($values as $key => &$value) {

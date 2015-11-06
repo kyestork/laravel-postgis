@@ -5,6 +5,8 @@ use Illuminate\Support\Arr;
 use Phaza\LaravelPostgis\Exceptions\PostgisFieldsNotDefinedException;
 use Phaza\LaravelPostgis\Geometries\Geometry;
 use Phaza\LaravelPostgis\Geometries\GeometryInterface;
+use Phaza\LaravelPostgis\Eloquent\Relations\SpatiallyRelatesToOne;
+use Phaza\LaravelPostgis\Eloquent\Relations\SpatiallyRelatesToMany;
 
 trait PostgisTrait
 {
@@ -62,5 +64,79 @@ trait PostgisTrait
             throw new PostgisFieldsNotDefinedException(__CLASS__ . ' has to define $postgisFields');
         }
 
+    }
+
+    /* TODO: Clean up the redundant methods with some magic */
+
+    public function spatiallyContainsOne($related, $foreignGeometry, $localGeometry)
+    {
+        $instance = new $related;
+        return new SpatiallyRelatesToOne($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Contains');
+    }
+
+    public function spatiallyContainsMany($related, $foreignGeometry, $localGeometry)
+    {
+        $instance = new $related;
+        return new SpatiallyRelatesToMany($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Contains');
+    }
+
+    public function spatiallyWithinOne($related, $foreignGeometry, $localGeometry)
+    {
+        $instance = new $related;
+        return new SpatiallyRelatesToOne($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Within');
+    }
+
+    public function spatiallyWithinMany($related, $foreignGeometry, $localGeometry)
+    {
+        $instance = new $related;
+        return new SpatiallyRelatesToMany($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Within');
+    }
+
+    public function spatiallyContainsProperlyOne($related, $foreignGeometry, $localGeometry)
+    {
+        $instance = new $related;
+        return new SpatiallyRelatesToOne($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'ContainsProperly');
+    }
+
+    public function spatiallyContainsProperlyMany($related, $foreignGeometry, $localGeometry)
+    {
+        $instance = new $related;
+        return new SpatiallyRelatesToMany($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'ContainsProperly');
+    }
+
+    public function spatiallyCoversOne($related, $foreignGeometry, $localGeometry)
+    {
+        $instance = new $related;
+        return new SpatiallyRelatesToOne($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Covers');
+    }
+
+    public function spatiallyCoversMany($related, $foreignGeometry, $localGeometry)
+    {
+        $instance = new $related;
+        return new SpatiallyRelatesToMany($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Covers');
+    }
+
+    public function spatiallyCrossesOne($related, $foreignGeometry, $localGeometry)
+    {
+        $instance = new $related;
+        return new SpatiallyRelatesToOne($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Crosses');
+    }
+
+    public function spatiallyCrossesMany($related, $foreignGeometry, $localGeometry)
+    {
+        $instance = new $related;
+        return new SpatiallyRelatesToMany($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Crosses');
+    }
+
+    public function spatiallyIntersectsOne($related, $foreignGeometry, $localGeometry)
+    {
+        $instance = new $related;
+        return new SpatiallyRelatesToOne($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Intersects');
+    }
+
+    public function spatiallyIntersectsMany($related, $foreignGeometry, $localGeometry)
+    {
+        $instance = new $related;
+        return new SpatiallyRelatesToMany($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Intersects');
     }
 }
