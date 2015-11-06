@@ -66,77 +66,21 @@ trait PostgisTrait
 
     }
 
-    /* TODO: Clean up the redundant methods with some magic */
+    /**
+     * TODO: Make magic methods resolve to the methods below (spatiallyContainsOne, spatiallyWithinMany, etc.)
+     * List of compatible ST_* functions (with parameters (Geometry A, Geometry B) and boolean return) can be found in
+     * Phaza\LaravelPostgis\Eloquent\Relations\SpatialRelation::$allowedComparisons
+     */
 
-    public function spatiallyContainsOne($related, $foreignGeometry, $localGeometry)
+    public function spatiallyRelatesToOne($related, $spatialComparison, $foreignGeometry = 'geometry', $localGeometry = 'geometry')
     {
         $instance = new $related;
-        return new SpatiallyRelatesToOne($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Contains');
+        return new SpatiallyRelatesToOne($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, $spatialComparison);
     }
 
-    public function spatiallyContainsMany($related, $foreignGeometry, $localGeometry)
+    public function spatiallyRelatesToMany($related, $spatialComparison, $foreignGeometry = 'geometry', $localGeometry = 'geometry')
     {
         $instance = new $related;
-        return new SpatiallyRelatesToMany($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Contains');
-    }
-
-    public function spatiallyWithinOne($related, $foreignGeometry, $localGeometry)
-    {
-        $instance = new $related;
-        return new SpatiallyRelatesToOne($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Within');
-    }
-
-    public function spatiallyWithinMany($related, $foreignGeometry, $localGeometry)
-    {
-        $instance = new $related;
-        return new SpatiallyRelatesToMany($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Within');
-    }
-
-    public function spatiallyContainsProperlyOne($related, $foreignGeometry, $localGeometry)
-    {
-        $instance = new $related;
-        return new SpatiallyRelatesToOne($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'ContainsProperly');
-    }
-
-    public function spatiallyContainsProperlyMany($related, $foreignGeometry, $localGeometry)
-    {
-        $instance = new $related;
-        return new SpatiallyRelatesToMany($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'ContainsProperly');
-    }
-
-    public function spatiallyCoversOne($related, $foreignGeometry, $localGeometry)
-    {
-        $instance = new $related;
-        return new SpatiallyRelatesToOne($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Covers');
-    }
-
-    public function spatiallyCoversMany($related, $foreignGeometry, $localGeometry)
-    {
-        $instance = new $related;
-        return new SpatiallyRelatesToMany($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Covers');
-    }
-
-    public function spatiallyCrossesOne($related, $foreignGeometry, $localGeometry)
-    {
-        $instance = new $related;
-        return new SpatiallyRelatesToOne($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Crosses');
-    }
-
-    public function spatiallyCrossesMany($related, $foreignGeometry, $localGeometry)
-    {
-        $instance = new $related;
-        return new SpatiallyRelatesToMany($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Crosses');
-    }
-
-    public function spatiallyIntersectsOne($related, $foreignGeometry, $localGeometry)
-    {
-        $instance = new $related;
-        return new SpatiallyRelatesToOne($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Intersects');
-    }
-
-    public function spatiallyIntersectsMany($related, $foreignGeometry, $localGeometry)
-    {
-        $instance = new $related;
-        return new SpatiallyRelatesToMany($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, 'Intersects');
+        return new SpatiallyRelatesToMany($instance->newQuery(), $this, $instance->getTable().'.'.$foreignGeometry, $localGeometry, $spatialComparison);
     }
 }
