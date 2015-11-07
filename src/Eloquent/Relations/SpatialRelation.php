@@ -18,8 +18,8 @@ abstract class SpatialRelation extends Relation {
      */
     protected $localGeometry;
 
-    protected $allowedComparisons = [
-    	'3DDFullyWithin',
+    public $allowedComparisons = [
+        '3DDFullyWithin',
         '3DDWithin',
         '3DIntersects',
         'Contains',
