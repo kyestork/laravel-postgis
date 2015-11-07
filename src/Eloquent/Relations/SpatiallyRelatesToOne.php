@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Collection;
 
-class SpatiallyRelatesToOne extends SpatiallyContainsOneOrMany
+class SpatiallyRelatesToOne extends SpatiallyRelatesToOneOrMany
 {
     /**
      * Get the results of the relationship.

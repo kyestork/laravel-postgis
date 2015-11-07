@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Collection;
 
-class SpatiallyRelatesToMany extends SpatiallyContainsOneOrMany
+class SpatiallyRelatesToMany extends SpatiallyRelatesToOneOrMany
 {
 
     /**
