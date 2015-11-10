@@ -57,13 +57,7 @@ abstract class SpatiallyRelatesToOneOrMany extends SpatialRelation
     {
         if (static::$constraints && in_array(Str::studly($this->spatialComparison), static::$allowedComparisons)) {
             $this->query->whereNotNull($this->foreignGeometry);
-
-            if($this->localGeometry == $this->foreignGeometry) {
-                $stRelates = sprintf("ST_%3$s(%1$s, %2$s)", $this->query->getModel()->getTable().'.'.$this->localGeometry, $this->related->getTable().'.'.$this->foreignGeometry);
-            }else{
-                $stRelates = sprintf("ST_%3$s(%1$s, %2$s)", $this->localGeometry, $this->foreignGeometry, Str::studly($this->spatialComparison));
-            }
-            
+            $stRelates = sprintf('ST_%3$s(%1$s, %2$s)', $this->localGeometry, $this->foreignGeometry, Str::studly($this->spatialComparison));
             $this->query->whereRaw($stRelates);
         }
     }
