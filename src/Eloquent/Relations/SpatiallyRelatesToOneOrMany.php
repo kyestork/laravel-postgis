@@ -34,8 +34,8 @@ abstract class SpatiallyRelatesToOneOrMany extends SpatialRelation
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Model  $parent
-     * @param  string  $foreignKey
-     * @param  string  $localKey
+     * @param  string  $foreignGeometry
+     * @param  string  $localGeometry
      * @return void
      */
     public function __construct(Builder $query, Model $parent, $foreignGeometry = 'geometry', $localGeometry = 'geometry', $spatialComparison = null)
@@ -56,8 +56,9 @@ abstract class SpatiallyRelatesToOneOrMany extends SpatialRelation
     public function addConstraints()
     {
         if (static::$constraints && in_array(Str::studly($this->spatialComparison), static::$allowedComparisons)) {
+            $table = $this->getTable();
             $this->query->whereNotNull($this->foreignGeometry);
-            $stRelates = sprintf('ST_%3$s(%1$s, %2$s)', $this->localGeometry, $this->foreignGeometry, Str::studly($this->spatialComparison));
+            $stRelates = sprintf('ST_%3$s(%1$s, %2$s)', $table.'.'.$this->localGeometry, $this->getTable()->getTable().'.'.$this->foreignGeometry, Str::studly($this->spatialComparison));
             $this->query->whereRaw($stRelates);
         }
     }

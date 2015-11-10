@@ -9,8 +9,6 @@ class Builder extends EloquentBuilder
     public function __construct(QueryBuilder $query)
     {
         parent::__construct($query);
-
-        //$this->query->macros['spatiallyContainsOne']
     }
 
     public function update(array $values)
